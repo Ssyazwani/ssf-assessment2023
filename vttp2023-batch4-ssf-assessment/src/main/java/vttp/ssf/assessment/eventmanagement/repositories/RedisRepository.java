@@ -17,7 +17,7 @@ import vttp.ssf.assessment.eventmanagement.models.Event;
 @Repository
 public class RedisRepository {
 
-    @Autowired
+    
     private RedisTemplate<String, String> redisTemplate;
 
     private static final String EVENTS_KEY = "events";
@@ -41,7 +41,7 @@ public class RedisRepository {
         return events;
     }
 
-    public String saveRecord(Event event) {
+    public List<Event> saveRecord(Event event) {
         event = new Event();
 
         String orderJson = convertOrderToJson(event);
@@ -49,7 +49,8 @@ public class RedisRepository {
         ListOperations<String, String> listOps = redisTemplate.opsForList();
         listOps.leftPush(EVENTS_KEY, orderJson);
 
-        return orderJson;
+        ;
+		return events;
     }
 
     public List<Event> getEvents() {
@@ -67,7 +68,6 @@ public class RedisRepository {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.writeValueAsString(event);
         } catch (JsonProcessingException e) {
-            // Handle exception
             return null;
         }
     }

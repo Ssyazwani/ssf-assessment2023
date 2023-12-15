@@ -1,5 +1,7 @@
 package vttp.ssf.assessment.eventmanagement.controllers;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,33 +36,49 @@ public class RegistrationController {
         
     }
 
+
+    @PostMapping("eventregister")
+    public String processRegistration(LocalDate dateOfBirth, Integer tickets, Model model){
+       LocalDate currTime = LocalDate.now();
+       int age = Period.between(dateOfBirth, currTime).getYears();
+    if (age < 21) {
+        FieldError err = new FieldError("register", "dateOfBirth", "Cannot be young or old");  
+        String agemessage=" User can only register for the event if they are 21 year old and above";
+
+        model.addAttribute("agemessage", agemessage);
+
+        return "ErrorRegistration";
+    } else if (tickets >3){
+
+      String ticketmessage=" User can only register for the event if they are 21 year old and above";
+
+         model.addAttribute("ticketmessage", ticketmessage);
+
+        return "ErrorRegistration";}
+
+    else { Register register = new Register(null, null, null, null, null, null);
+
+       registerList.add(register);
+
+       return "SuccessRegistration";
+    
+    }
+
+
+
+    
+    }
+   
 }
 
-//     @PostMapping("eventregister")
-//     public String processRegistration(){
-      //  LocalDate currTime = LocalDate.now();
-    // int age = Period.between(dateOfBirth, currTime).getYears();
 
-    // if (age < 21) {
-    //     FieldError err = new FieldError("register", "dateOfBirth", "Cannot be young or old");  
-        //String agemessage:" User can only register for the event if they are 21 year old and above"
-         //model.addAttribute("agemessage", agemessage);
-    //     return "error";
-    // } else if (numOftickets >3){
-      //String ticketmessage:" User can only register for the event if they are 21 year old and above"
-         //model.addAttribute("agemessage", agemessage);
-    //     return "error";}
-
-    //else 
-    // register = new Register(null, null, null, null, null, null);
-
-      //  registerList.add(register);
-    //return success
+    
 
 
 
+    
 
-    //}
+
 
 //        
 

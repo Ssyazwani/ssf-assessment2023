@@ -29,8 +29,8 @@ public class DatabaseService{
 
 public List<Event> readFile(String fileName) throws FileNotFoundException, IOException {
 
-			fileName = "c://data/events.json"; // for Windows users
-           
+			fileName = "events.json"; // for Windows users
+        
 	
 			try (InputStream is = new FileInputStream(fileName);
 				 BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
